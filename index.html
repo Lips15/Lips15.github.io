@@ -178,6 +178,10 @@
     .shot img { width: 100%; height: auto; }
     .shot:hover { border-color: var(--accent); }
     .case-body .shot-note { color: var(--muted); font-size: 0.9375rem; }
+    .case-body .points { margin: 0 0 20px; padding-left: 1.1em; max-width: 38em; }
+    .case-body .points li { margin: 0 0 6px; padding-left: 4px; }
+    .case-body .points li::marker { color: var(--accent); }
+    .case-body .play { margin: 16px 0 0; }
     @media (min-width: 600px) { .shots { grid-template-columns: 1fr 1fr; align-items: start; } }
 
     /* ---------- Experience ---------- */
@@ -419,6 +423,41 @@
               </a>
             </div>
             <p class="shot-note">Generated from sample data. <a href="samples/meta-ads-report-sample.html" target="_blank" rel="noopener">Open the full interactive report</a> (in Chinese).</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= SIDE PROJECT ================= -->
+    <section id="side-project" aria-labelledby="side-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="side-title">Side project</h2>
+          <p>A promo mini-game concept, built with AI, showing how a retail brand could turn a store opening into something people want to play.</p>
+        </div>
+
+        <article class="case">
+          <div class="case-side">
+            <h3>Grand Opening Grab: a claw machine that gives out vouchers</h3>
+            <dl class="meta">
+              <dt>Type</dt><dd>Promo mini-game concept</dd>
+              <dt>Brand</dt><dd>Button Lane, a fictional fashion store</dd>
+              <dt>Built with</dt><dd>Claude</dd>
+              <dt>Works on</dt><dd>Phone and desktop browsers</dd>
+            </dl>
+          </div>
+          <div class="case-body">
+            <h4>The idea</h4>
+            <p>Players get three free tries a day to grab a button from the machine. Each colour is a different reward, from a free tote bag to an RM50 voucher, to use at the new store.</p>
+            <h4>Marketing choices built in</h4>
+            <ul class="points">
+              <li>The marketer sets the odds and stock for every prize, so the promo can't go over budget.</li>
+              <li>Sharing with a friend unlocks one extra try, which widens reach.</li>
+              <li>Anyone who wins nothing in three tries still gets a 5% voucher, so every player has a reason to visit.</li>
+              <li>Each voucher has a unique code and an expiry date, so redemptions can be matched at the till.</li>
+            </ul>
+            <a class="shot" href="demo/claw/"><img src="assets/claw-promo.jpg" alt="The Grand Opening Grab game: a purple claw machine full of colourful sewing buttons, next to the prize list" width="1200" height="854" loading="lazy"></a>
+            <p class="play"><a class="btn" href="demo/claw/">Play the demo</a></p>
           </div>
         </article>
       </div>
