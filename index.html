@@ -173,6 +173,12 @@
       white-space: nowrap;
     }
     .results span { display: block; color: var(--muted); font-size: 0.875rem; line-height: 1.4; margin-top: 4px; }
+    .shots { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 8px 0 12px; }
+    .shot { display: block; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; background: #fff; }
+    .shot img { width: 100%; height: auto; }
+    .shot:hover { border-color: var(--accent); }
+    .case-body .shot-note { color: var(--muted); font-size: 0.9375rem; }
+    @media (min-width: 600px) { .shots { grid-template-columns: 1fr 1fr; align-items: start; } }
 
     /* ---------- Experience ---------- */
     .job { display: grid; grid-template-columns: 1fr; gap: 18px; padding: 36px 0; border-top: 1px solid var(--rule); }
@@ -248,6 +254,7 @@
       <a class="brand" href="#top">Lips</a>
       <nav class="nav" aria-label="Sections">
         <a href="#skills">Skills</a>
+        <a href="#work">Work</a>
         <a href="#experience">Experience</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -325,7 +332,7 @@
             <p>Using generative AI to work faster, with every number checked.</p>
             <ul>
               <li>Data analysis and report drafting with ChatGPT and Claude</li>
-              <li>Management slide decks built with AI</li>
+              <li>Automated monthly social media and ads reports</li>
               <li>Ad copy variations and keyword ideas</li>
               <li>Ad creative and social post templates</li>
               <li>Prompt writing</li>
@@ -352,6 +359,71 @@
       </div>
     </section>
 
+    <!-- ================= CASE STUDIES ================= -->
+    <section id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="work-title">Selected work</h2>
+          <p>Two reporting projects that use AI to turn monthly work into a repeatable process. Reports are written in Chinese for the business owner. Real spend figures are left out, and the report generator is shown with sample data.</p>
+        </div>
+
+        <!-- Case study 1 -->
+        <article class="case">
+          <div class="case-side">
+            <h3>Monthly social media and ads reports, set up once with AI</h3>
+            <dl class="meta">
+              <dt>Industry</dt><dd>Fashion retail</dd>
+              <dt>My role</dt><dd>Built and run the reporting workflow</dd>
+              <dt>Data</dt><dd>Meta Business Suite, Meta Ads Manager, Xiaohongshu</dd>
+              <dt>Readers</dt><dd>Business owner and management</dd>
+            </dl>
+          </div>
+          <div class="case-body">
+            <h4>Challenge</h4>
+            <p>Every month management needs two reports: organic social media across Facebook, Instagram and Xiaohongshu, and Meta paid ads. Each one meant pulling numbers from several dashboards, comparing them with earlier months and explaining what changed in plain language.</p>
+            <h4>What I did</h4>
+            <p>Built a reporting workflow with Claude so both reports come out in the same structure, with the same definitions, every month. The social media report separates organic from paid by subtracting ad-driven views, compares the last four months, picks the best and worst post on each platform with a reason, and ends with next month's to-do list. The ads report splits spend by purpose, tracks cost per result against the previous three months, explains what changed and lists the decisions the owner needs to make.</p>
+            <p>Because every month is laid out the same way, patterns show up that are easy to miss. From June to September, sales ads using an image with the price brought in enquiries far more cheaply than video, so sales ads moved back to images and video was kept for follower growth.</p>
+            <h4>Results</h4>
+            <ul class="results">
+              <li><strong>2</strong><span>monthly reports produced by one workflow</span></li>
+              <li><strong>2.8×</strong><span>cheaper enquiries from image ads than video</span></li>
+              <li><strong>8–10×</strong><span>organic reach for question posts vs a typical post</span></li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Case study 2 -->
+        <article class="case">
+          <div class="case-side">
+            <h3>Meta Ads report generator: one export in, a full analysis out</h3>
+            <dl class="meta">
+              <dt>Type</dt><dd>Reusable reporting tool</dd>
+              <dt>My role</dt><dd>Designed the report logic, built with Claude</dd>
+              <dt>Input</dt><dd>Meta Ads Manager CSV export</dd>
+              <dt>Output</dt><dd>Interactive HTML report</dd>
+            </dl>
+          </div>
+          <div class="case-body">
+            <h4>Challenge</h4>
+            <p>Ads reports often stop at totals. Campaigns with different goals get judged on the same cost, a few small ads distort the rankings, and creative fatigue is noticed only after the budget is spent.</p>
+            <h4>What I did</h4>
+            <p>Built a generator that turns one Ads Manager export into a six-part report: summary, spend share, daily trends, cost per result, best and worst ads, and next month's actions. It works out costs separately for purchases, conversations and leads, compares each ad only with ads chasing the same result, and leaves out ads too small to judge. Recommendations follow set rules: pause ads that spent without results, replace ads costing more than twice the average, refresh creative when cost per result climbs while click-through falls, and raise budgets on winners by about 20% every three to four days so they don't restart Meta's learning phase.</p>
+            <h4>Sample output</h4>
+            <div class="shots">
+              <a class="shot" href="samples/meta-ads-report-sample.html" target="_blank" rel="noopener">
+                <img src="assets/report-summary.jpg" alt="Report summary: total spend, purchase value, ROAS, and cost per purchase, conversation and lead, each compared between the first and second half of the month" width="1200" height="905" loading="lazy">
+              </a>
+              <a class="shot" href="samples/meta-ads-report-sample.html" target="_blank" rel="noopener">
+                <img src="assets/report-actions.jpg" alt="Next month's actions: pause, replace, refresh creative, raise budget, monitor and test, each with the numbers behind it" width="1200" height="843" loading="lazy">
+              </a>
+            </div>
+            <p class="shot-note">Generated from sample data. <a href="samples/meta-ads-report-sample.html" target="_blank" rel="noopener">Open the full interactive report</a> (in Chinese).</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <!-- ================= EXPERIENCE ================= -->
     <section id="experience" aria-labelledby="experience-title">
       <div class="wrap">
@@ -372,6 +444,7 @@
               <li>Plan and manage paid social campaigns for store promotions, branch launches and franchise recruitment.</li>
               <li>Oversee social media content planning and publishing.</li>
               <li>Analyse campaign, channel and store data and report to management with recommendations.</li>
+              <li>Built an AI workflow that produces the monthly social media and Meta Ads reports.</li>
             </ul>
           </div>
         </article>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meta 广告投放报告</title>
+<style>
+:root{
+  color-scheme:light;
+  --page:#f1f0ec;--surface:#fcfcfb;--ink:#0b0b0b;--ink-2:#52514e;--muted:#898781;
+  --grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,.10);--wash:rgba(11,11,11,.035);--hover:rgba(42,120,214,.10);
+  --c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;--c4:#eda100;--c5:#e87ba4;--c6:#008300;--c-other:#b9b8b0;
+  --accent:#2a78d6;--bar-soft:#86b6ef;--line-strong:#1c5cab;--critical:#d03b3b;
+  --good-text:#006300;--bad-text:#c42f2f;--on-c4:#0b0b0b;
+  --shadow:0 6px 24px rgba(11,11,11,.12);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --page:#0d0d0d;--surface:#1a1a19;--ink:#f0efec;--ink-2:#c3c2b7;--muted:#898781;
+    --grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,.10);--wash:rgba(255,255,255,.045);--hover:rgba(57,135,229,.16);
+    --c1:#3987e5;--c2:#d95926;--c3:#199e70;--c4:#c98500;--c5:#d55181;--c6:#008300;--c-other:#5d5c57;
+    --accent:#3987e5;--bar-soft:#256abf;--line-strong:#9ec5f4;--critical:#d03b3b;
+    --good-text:#0ca30c;--bad-text:#ef7b7b;--on-c4:#ffffff;
+    --shadow:0 6px 24px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#0d0d0d;--surface:#1a1a19;--ink:#f0efec;--ink-2:#c3c2b7;--muted:#898781;
+  --grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,.10);--wash:rgba(255,255,255,.045);--hover:rgba(57,135,229,.16);
+  --c1:#3987e5;--c2:#d95926;--c3:#199e70;--c4:#c98500;--c5:#d55181;--c6:#008300;--c-other:#5d5c57;
+  --accent:#3987e5;--bar-soft:#256abf;--line-strong:#9ec5f4;--critical:#d03b3b;
+  --good-text:#0ca30c;--bad-text:#ef7b7b;--on-c4:#ffffff;
+  --shadow:0 6px 24px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+.rpt-wrap{padding:32px 16px 64px}
+.rpt{max-width:920px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:44px 52px 36px}
+.rpt-head{border-bottom:1px solid var(--grid);padding-bottom:20px}
+.rpt-brand{font-size:13px;color:var(--ink-2);letter-spacing:.04em;margin-bottom:4px}
+.rpt h1{font-size:28px;line-height:1.3;margin:0 0 6px;font-weight:650;letter-spacing:.01em}
+.rpt-meta{font-size:13.5px;color:var(--ink-2)}
+.rpt-sec{margin-top:40px}
+.rpt h2{font-size:19px;font-weight:650;margin:0 0 16px;display:flex;align-items:center;gap:10px}
+.rpt h2 .no{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--wash);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--ink-2)}
+.rpt h3{font-size:15.5px;font-weight:600;margin:26px 0 4px}
+.rpt .lead{font-size:14px;color:var(--ink-2);margin:0 0 10px}
+.hero-row{display:grid;grid-template-columns:minmax(220px,1.1fr) 2fr;gap:14px;align-items:stretch}
+.hero,.tile{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--surface)}
+.hero{display:flex;flex-direction:column;justify-content:center}
+.lab{font-size:13px;color:var(--ink-2)}
+.hero-val{font-size:44px;font-weight:650;line-height:1.15;margin:4px 0 2px;letter-spacing:-.01em;white-space:nowrap}
+.hero-val.long{font-size:34px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.tiles.types{margin-top:14px}
+.tile .val{font-size:26px;font-weight:620;line-height:1.25;margin-top:2px}
+.tile .val small{font-size:14px;font-weight:500;color:var(--ink-2);margin-left:3px}
+.sub{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.good{color:var(--good-text);font-weight:600;white-space:nowrap}
+.bad{color:var(--bad-text);font-weight:600;white-space:nowrap}
+.flat{color:var(--ink-2);white-space:nowrap}
+.concl{margin:18px 0 0;padding:0 0 0 20px}
+.concl li{margin:6px 0}
+.note{background:var(--wash);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--ink-2);margin:16px 0 0}
+.tbl-wrap{overflow-x:auto;margin-top:14px;-webkit-overflow-scrolling:touch}
+.rpt table{width:100%;border-collapse:collapse;font-size:13.5px}
+.rpt th{text-align:left;color:var(--ink-2);font-weight:500;border-bottom:1px solid var(--axis);padding:8px 10px;white-space:nowrap}
+.rpt td{border-bottom:1px solid var(--grid);padding:9px 10px;vertical-align:top}
+.rpt th.num,.rpt td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rpt tfoot td{font-weight:600;border-bottom:none;border-top:1px solid var(--axis)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:baseline}
+.nm{font-weight:550;word-break:break-word}
+.nmw{min-width:10em}
+.nm-sub{font-size:12px;color:var(--ink-2);word-break:break-word}
+.ml{display:block}
+.chart{position:relative;width:100%;margin-top:6px;min-height:20px}
+.chart svg{display:block;overflow:visible}
+.chart .empty{font-size:13px;color:var(--muted);margin:8px 0}
+.lg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--ink-2);margin:8px 0 6px}
+.lg-item{display:inline-flex;align-items:center;gap:6px}
+.lg-key{display:inline-block;width:10px;height:10px;border-radius:3px}
+.lg-key.line{width:16px;height:2px;border-radius:1px}
+.chart .grid{stroke:var(--grid);stroke-width:1}
+.chart .axis{stroke:var(--axis);stroke-width:1}
+.chart .ref{stroke:var(--ink-2);stroke-width:1}
+.chart .ax{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.chart .lbl{fill:var(--ink-2);font-size:12.5px}
+.chart .halo{paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.chart .val{fill:var(--ink);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.chart .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .area{stroke:none;opacity:.10}
+.chart .dot{stroke:var(--surface);stroke-width:2}
+.chart .hit{fill:transparent;cursor:default;outline:none}
+.chart .hit.hot,.chart .hit:focus-visible{fill:var(--hover)}
+.chart .seg{outline:none}
+.chart .seg.hot,.chart .seg:focus-visible{opacity:.82}
+.chart .seg-lab{fill:#fff;font-size:12px;font-weight:600}
+.chart .seg-lab.dark{fill:var(--on-c4)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+.grid2 > div{min-width:0}
+.cap{font-size:12.5px;color:var(--ink-2);margin:10px 0 0}
+details.tv{margin-top:10px}
+details.tv summary{font-size:12.5px;color:var(--ink-2);cursor:pointer;width:max-content}
+details.tv table{font-size:12.5px}
+.rank-h{display:flex;align-items:center;gap:8px;margin:22px 0 0;font-size:15.5px;font-weight:600}
+.rank-h .ic{font-size:13px}
+.sugg{list-style:none;margin:0;padding:0;counter-reset:s}
+.sugg li{counter-increment:s;position:relative;border:1px solid var(--border);border-radius:12px;padding:12px 16px 12px 50px;margin:0 0 10px}
+.sugg li::before{content:counter(s);position:absolute;left:16px;top:13px;width:22px;height:22px;border-radius:50%;background:var(--wash);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--ink-2);display:flex;align-items:center;justify-content:center}
+.sugg .act{font-weight:600}
+.sugg .why{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+.chip{display:inline-block;font-size:11.5px;font-weight:600;border:1px solid var(--border);border-radius:999px;padding:0 8px;margin-right:8px;color:var(--ink-2);vertical-align:1px;background:var(--wash)}
+[contenteditable="true"]{border-radius:8px;outline:1px dashed transparent;outline-offset:4px;transition:outline-color .15s}
+[contenteditable="true"]:hover{outline-color:var(--axis)}
+[contenteditable="true"]:focus{outline:2px solid var(--accent)}
+.rpt-foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--grid);font-size:12px;color:var(--muted)}
+.rpt-tip{position:fixed;z-index:50;display:none;pointer-events:none;min-width:140px;max-width:300px;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);padding:8px 11px;font-size:12.5px;line-height:1.5}
+.tt-title{color:var(--ink-2);margin-bottom:3px;word-break:break-word}
+.tt-row{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.tt-row b{font-weight:650;font-variant-numeric:tabular-nums}
+.tt-lab{color:var(--ink-2)}
+.tt-key{display:inline-block;width:12px;height:2px;border-radius:1px;background:transparent}
+.tt-key.rect{height:8px;width:8px;border-radius:2px}
+@media (max-width:720px){
+  .rpt-wrap{padding:0}
+  .rpt{border-radius:0;border-left:none;border-right:none;padding:24px 16px}
+  .rpt h1{font-size:23px}
+  .hero-row,.grid2{grid-template-columns:1fr}
+  .hero-val{font-size:38px}
+  .tiles{grid-template-columns:1fr 1fr}
+  .tile .val{font-size:21px}
+  .rpt td,.rpt th{padding:8px 7px}
+}
+@media print{
+  :root,:root[data-theme="dark"]{
+    color-scheme:light;
+    --page:#ffffff;--surface:#ffffff;--ink:#0b0b0b;--ink-2:#52514e;--muted:#898781;
+    --grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,.14);--wash:rgba(11,11,11,.035);--hover:transparent;
+    --c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;--c4:#eda100;--c5:#e87ba4;--c6:#008300;--c-other:#b9b8b0;
+    --accent:#2a78d6;--bar-soft:#86b6ef;--line-strong:#1c5cab;--critical:#d03b3b;
+    --good-text:#006300;--bad-text:#c42f2f;--on-c4:#0b0b0b;
+  }
+  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rpt-wrap{padding:0}
+  .rpt{border:none;padding:0;max-width:none}
+  .hero,.tile,.sugg li,.chart,.grid2 > div,.rpt h3,tr{break-inside:avoid}
+  .rpt h2,.rpt h3,.rank-h,.cap,.lead{break-after:avoid}
+  details.tv,.tool-only,.rpt-tip{display:none!important}
+  [contenteditable="true"]{outline:none!important}
+  @page{size:A4;margin:14mm 12mm}
+}
+</style>
+</head>
+<body>
+<main class="rpt-wrap"><article class="rpt" id="report"><header class="rpt-head"><h1>Meta 广告投放报告</h1><div class="rpt-meta">报告期间：2026年10月1日 – 10月31日（31 天） · 生成日期：2026年11月2日</div></header><section class="rpt-sec"><h2><span class="no">1</span>本期摘要</h2><div class="hero-row"><div class="hero"><div class="lab">总花费</div><div class="hero-val">RM 29,998</div><div class="sub">日均 RM 968 · 4 个 campaign · 12 个广告</div></div><div class="tiles"><div class="tile"><div class="lab">购买价值</div><div class="val">RM 72,888</div><div class="sub">广告带来的销售额（Meta 统计）</div></div><div class="tile"><div class="lab">ROAS（购买类广告）</div><div class="val">3.70</div><div class="sub">每花 RM 1 收回 RM 3.70<br>算上所有花费：2.43</div></div></div></div><div class="tiles types"><div class="tile"><div class="lab">购买 · 花费 RM 19,680</div><div class="val">570<small>笔</small></div><div class="sub">每笔 RM 34.53<br>下半段成本 <span class="flat">基本持平</span></div></div><div class="tile"><div class="lab">私信对话 · 花费 RM 7,424</div><div class="val">693<small>个</small></div><div class="sub">每个 RM 10.71<br>下半段成本 <span class="bad">▲ 上升 22%</span></div></div><div class="tile"><div class="lab">潜在客户 · 花费 RM 2,893</div><div class="val">155<small>个</small></div><div class="sub">每个 RM 18.67<br>下半段成本 <span class="good">▼ 下降 13%</span></div></div></div><ul class="concl" style=""><li>本期共花费 <b>RM 29,998</b>，带来 <b>570 笔购买</b>（每笔 RM 34.53）、<b>693 个私信对话</b>（每个 RM 10.71）、<b>155 个潜在客户</b>（每个 RM 18.67）。购买类广告 ROAS 为 <b>3.70</b>，带来约 RM 72,888 的销售额。</li><li>花费最多的是「Sales_Prospecting_Oct」，占总花费 <b>45%</b>；前两个 campaign 合计占 70%。</li><li>和上半段相比，下半段购买成本基本持平，私信对话成本<span class="bad">上升 22%</span>，潜在客户成本<span class="good">下降 13%</span>。</li><li>表现最好的广告是「DPA_Catalog_Retarget」（每笔 RM 22.13，比同类平均便宜 36%）；最需要处理的是「LeadForm_Static_B」（花了 RM 323.01 没有结果）。</li></ul><p class="note">说明：各 campaign 的目标不同（购买、私信对话、潜在客户），不同结果的成本不能直接比较，所以本报告按结果类型分别计算。</p></section><section class="rpt-sec"><h2><span class="no">2</span>各 campaign 花费占比</h2><div class="chart" data-spec="{&quot;type&quot;:&quot;seg&quot;,&quot;items&quot;:[{&quot;label&quot;:&quot;Sales_Prospecting_Oct&quot;,&quot;value&quot;:13507.22,&quot;valueText&quot;:&quot;RM 13,507.22&quot;,&quot;color&quot;:&quot;var(--c1)&quot;,&quot;dark&quot;:false},{&quot;label&quot;:&quot;WhatsApp_Leads_KL&quot;,&quot;value&quot;:7424.17,&quot;valueText&quot;:&quot;RM 7,424.17&quot;,&quot;color&quot;:&quot;var(--c2)&quot;,&quot;dark&quot;:false},{&quot;label&quot;:&quot;Sales_Retargeting_Oct&quot;,&quot;value&quot;:6173.25,&quot;valueText&quot;:&quot;RM 6,173.25&quot;,&quot;color&quot;:&quot;var(--c3)&quot;,&quot;dark&quot;:false},{&quot;label&quot;:&quot;LeadForm_FreeTrial&quot;,&quot;value&quot;:2893.4,&quot;valueText&quot;:&quot;RM 2,893.40&quot;,&quot;color&quot;:&quot;var(--c4)&quot;,&quot;dark&quot;:true}],&quot;aria&quot;:&quot;各 campaign 花费占比&quot;}"></div><div class="tbl-wrap"><table><thead><tr><th>Campaign</th><th>结果类型</th><th class="num">花费</th><th class="num">占比</th><th class="num">结果</th><th class="num">每个结果成本</th><th class="num">ROAS</th></tr></thead><tbody><tr><td><div class="nmw"><span class="sw" style="background:var(--c1)"></span><span class="nm">Sales_Prospecting_Oct</span></div></td><td>购买</td><td class="num">RM 13,507.22</td><td class="num">45.0%</td><td class="num"><span class="ml">367</span></td><td class="num"><span class="ml">RM 36.80 <span class="nm-sub">/笔</span></span></td><td class="num">3.38</td></tr><tr><td><div class="nmw"><span class="sw" style="background:var(--c2)"></span><span class="nm">WhatsApp_Leads_KL</span></div></td><td>私信对话</td><td class="num">RM 7,424.17</td><td class="num">24.7%</td><td class="num"><span class="ml">693</span></td><td class="num"><span class="ml">RM 10.71 <span class="nm-sub">/个</span></span></td><td class="num">—</td></tr><tr><td><div class="nmw"><span class="sw" style="background:var(--c3)"></span><span class="nm">Sales_Retargeting_Oct</span></div></td><td>购买</td><td class="num">RM 6,173.25</td><td class="num">20.6%</td><td class="num"><span class="ml">203</span></td><td class="num"><span class="ml">RM 30.41 <span class="nm-sub">/笔</span></span></td><td class="num">4.40</td></tr><tr><td><div class="nmw"><span class="sw" style="background:var(--c4)"></span><span class="nm">LeadForm_FreeTrial</span></div></td><td>潜在客户</td><td class="num">RM 2,893.40</td><td class="num">9.6%</td><td class="num"><span class="ml">155</span></td><td class="num"><span class="ml">RM 18.67 <span class="nm-sub">/个</span></span></td><td class="num">—</td></tr></tbody><tfoot><tr><td>合计</td><td></td><td class="num">RM 29,998.04</td><td class="num">100%</td><td class="num"></td><td class="num"></td><td class="num">3.70</td></tr></tfoot></table></div></section><section class="rpt-sec"><h2><span class="no">3</span>结果趋势</h2><h3>每日花费</h3><p class="lead">日均 RM 968，最高 10月31日 RM 1,198。</p><div class="chart" data-spec="{&quot;type&quot;:&quot;daily&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;bars&quot;:[852.42,889.49,928.78,969.38,850.2,819.74,819.11,869.01,912.94,1016.22,971.14,902.56,899.47,866.44,867.91,868.79,988.74,1167.52,998.91,990.92,962.46,1011.73,989.89,1160.28,1114.77,1058.44,1079.81,1022.2,1013.33,937.17,1198.27],&quot;barLabel&quot;:&quot;花费&quot;,&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;barColor&quot;:&quot;var(--accent)&quot;,&quot;height&quot;:180,&quot;aria&quot;:&quot;每日花费&quot;}"></div><h3>每日购买数</h3><p class="lead">共 570 笔购买，日均 18.4 笔；下半段日均比上半段 <span class="good">▲ 上升 23%</span>。</p><div class="chart" data-spec="{&quot;type&quot;:&quot;daily&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;bars&quot;:[12,20,12,22,21,17,14,18,13,16,21,21,15,14,10,14,9,25,13,17,17,21,22,18,20,31,29,24,16,24,24],&quot;line&quot;:[null,null,null,null,null,null,16.86,17.71,16.71,17.29,17.14,17.14,16.86,16.86,15.71,15.86,14.86,15.43,14.29,14.57,15,16.57,17.71,19,18.29,20.86,22.57,23.57,22.86,23.14,24],&quot;barLabel&quot;:&quot;每日购买&quot;,&quot;lineLabel&quot;:&quot;近 7 天平均&quot;,&quot;unit&quot;:&quot;int&quot;,&quot;lineUnit&quot;:&quot;dec&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;height&quot;:190,&quot;aria&quot;:&quot;每日购买数&quot;}"></div><h3>每日私信对话数</h3><p class="lead">共 693 个私信对话，日均 22.4 个；下半段日均比上半段 <span class="bad">▼ 下降 16%</span>。</p><div class="chart" data-spec="{&quot;type&quot;:&quot;daily&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;bars&quot;:[23,25,28,28,30,19,32,17,29,26,19,22,26,19,22,20,17,30,22,30,12,22,19,25,18,15,18,23,26,15,16],&quot;line&quot;:[null,null,null,null,null,null,26.43,25.57,26.14,25.86,24.57,23.43,24.43,22.57,23.29,22,20.71,22.29,22.29,22.86,21.86,21.86,21.71,22.86,21.14,20.14,18.43,20,20.57,20,18.71],&quot;barLabel&quot;:&quot;每日私信对话&quot;,&quot;lineLabel&quot;:&quot;近 7 天平均&quot;,&quot;unit&quot;:&quot;int&quot;,&quot;lineUnit&quot;:&quot;dec&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;height&quot;:190,&quot;aria&quot;:&quot;每日私信对话数&quot;}"></div><h3>每日潜在客户数</h3><p class="lead">共 155 个潜在客户，日均 5.0 个；下半段日均比上半段 <span class="bad">▼ 下降 10%</span>。</p><div class="chart" data-spec="{&quot;type&quot;:&quot;daily&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;bars&quot;:[4,4,3,9,7,5,7,3,7,3,7,4,2,6,8,4,6,6,6,3,7,7,4,3,3,7,6,4,2,4,4],&quot;line&quot;:[null,null,null,null,null,null,5.57,5.43,5.86,5.86,5.57,5.14,4.71,4.57,5.29,4.86,5.29,5.14,5.43,5.57,5.71,5.57,5.57,5.14,4.71,4.86,5.29,4.86,4.14,4.14,4.29],&quot;barLabel&quot;:&quot;每日潜在客户&quot;,&quot;lineLabel&quot;:&quot;近 7 天平均&quot;,&quot;unit&quot;:&quot;int&quot;,&quot;lineUnit&quot;:&quot;dec&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;height&quot;:190,&quot;aria&quot;:&quot;每日潜在客户数&quot;}"></div><details class="tv"><summary>查看每日数据表</summary><div class="tbl-wrap"><table><thead><tr><th>日期</th><th class="num">花费</th><th class="num">购买</th><th class="num">私信对话</th><th class="num">潜在客户</th></tr></thead><tbody><tr><td>10月1日</td><td class="num">RM 852.42</td><td class="num">12</td><td class="num">23</td><td class="num">4</td></tr><tr><td>10月2日</td><td class="num">RM 889.49</td><td class="num">20</td><td class="num">25</td><td class="num">4</td></tr><tr><td>10月3日</td><td class="num">RM 928.78</td><td class="num">12</td><td class="num">28</td><td class="num">3</td></tr><tr><td>10月4日</td><td class="num">RM 969.38</td><td class="num">22</td><td class="num">28</td><td class="num">9</td></tr><tr><td>10月5日</td><td class="num">RM 850.20</td><td class="num">21</td><td class="num">30</td><td class="num">7</td></tr><tr><td>10月6日</td><td class="num">RM 819.74</td><td class="num">17</td><td class="num">19</td><td class="num">5</td></tr><tr><td>10月7日</td><td class="num">RM 819.11</td><td class="num">14</td><td class="num">32</td><td class="num">7</td></tr><tr><td>10月8日</td><td class="num">RM 869.01</td><td class="num">18</td><td class="num">17</td><td class="num">3</td></tr><tr><td>10月9日</td><td class="num">RM 912.94</td><td class="num">13</td><td class="num">29</td><td class="num">7</td></tr><tr><td>10月10日</td><td class="num">RM 1,016.22</td><td class="num">16</td><td class="num">26</td><td class="num">3</td></tr><tr><td>10月11日</td><td class="num">RM 971.14</td><td class="num">21</td><td class="num">19</td><td class="num">7</td></tr><tr><td>10月12日</td><td class="num">RM 902.56</td><td class="num">21</td><td class="num">22</td><td class="num">4</td></tr><tr><td>10月13日</td><td class="num">RM 899.47</td><td class="num">15</td><td class="num">26</td><td class="num">2</td></tr><tr><td>10月14日</td><td class="num">RM 866.44</td><td class="num">14</td><td class="num">19</td><td class="num">6</td></tr><tr><td>10月15日</td><td class="num">RM 867.91</td><td class="num">10</td><td class="num">22</td><td class="num">8</td></tr><tr><td>10月16日</td><td class="num">RM 868.79</td><td class="num">14</td><td class="num">20</td><td class="num">4</td></tr><tr><td>10月17日</td><td class="num">RM 988.74</td><td class="num">9</td><td class="num">17</td><td class="num">6</td></tr><tr><td>10月18日</td><td class="num">RM 1,167.52</td><td class="num">25</td><td class="num">30</td><td class="num">6</td></tr><tr><td>10月19日</td><td class="num">RM 998.91</td><td class="num">13</td><td class="num">22</td><td class="num">6</td></tr><tr><td>10月20日</td><td class="num">RM 990.92</td><td class="num">17</td><td class="num">30</td><td class="num">3</td></tr><tr><td>10月21日</td><td class="num">RM 962.46</td><td class="num">17</td><td class="num">12</td><td class="num">7</td></tr><tr><td>10月22日</td><td class="num">RM 1,011.73</td><td class="num">21</td><td class="num">22</td><td class="num">7</td></tr><tr><td>10月23日</td><td class="num">RM 989.89</td><td class="num">22</td><td class="num">19</td><td class="num">4</td></tr><tr><td>10月24日</td><td class="num">RM 1,160.28</td><td class="num">18</td><td class="num">25</td><td class="num">3</td></tr><tr><td>10月25日</td><td class="num">RM 1,114.77</td><td class="num">20</td><td class="num">18</td><td class="num">3</td></tr><tr><td>10月26日</td><td class="num">RM 1,058.44</td><td class="num">31</td><td class="num">15</td><td class="num">7</td></tr><tr><td>10月27日</td><td class="num">RM 1,079.81</td><td class="num">29</td><td class="num">18</td><td class="num">6</td></tr><tr><td>10月28日</td><td class="num">RM 1,022.20</td><td class="num">24</td><td class="num">23</td><td class="num">4</td></tr><tr><td>10月29日</td><td class="num">RM 1,013.33</td><td class="num">16</td><td class="num">26</td><td class="num">2</td></tr><tr><td>10月30日</td><td class="num">RM 937.17</td><td class="num">24</td><td class="num">15</td><td class="num">4</td></tr><tr><td>10月31日</td><td class="num">RM 1,198.27</td><td class="num">24</td><td class="num">16</td><td class="num">4</td></tr></tbody></table></div></details></section><section class="rpt-sec"><h2><span class="no">4</span>每个结果成本</h2><p class="lead">按结果类型分别看。红色条是同类里成本最高的。</p><h3>每笔购买成本：平均 RM 34.53</h3><p class="lead">上半段 RM 33.81 → 下半段 RM 35.07（<span class="flat">基本持平</span>）</p><div class="grid2"><div><p class="cap">各 campaign</p><div class="chart" data-spec="{&quot;type&quot;:&quot;hbar&quot;,&quot;items&quot;:[{&quot;label&quot;:&quot;Sales_Retargeting_Oct&quot;,&quot;value&quot;:30.41,&quot;highlight&quot;:false,&quot;flag&quot;:&quot;&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 6,173）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;RM 30.41&quot;,&quot;k&quot;:&quot;每笔购买成本&quot;},{&quot;v&quot;:&quot;RM 6,173.25&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;203&quot;,&quot;k&quot;:&quot;购买&quot;}]},{&quot;label&quot;:&quot;Sales_Prospecting_Oct&quot;,&quot;value&quot;:36.8,&quot;highlight&quot;:true,&quot;flag&quot;:&quot;▲ 最高&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 13,507）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;RM 36.80&quot;,&quot;k&quot;:&quot;每笔购买成本&quot;},{&quot;v&quot;:&quot;RM 13,507.22&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;367&quot;,&quot;k&quot;:&quot;购买&quot;}]}],&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;avg&quot;:{&quot;value&quot;:34.53,&quot;label&quot;:&quot;平均 RM 34.53&quot;},&quot;aria&quot;:&quot;每笔购买成本（按 campaign）&quot;}"></div></div><div><p class="cap">每日走势（近 7 天滚动平均）</p><div class="chart" data-spec="{&quot;type&quot;:&quot;line&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;values&quot;:[null,null,null,null,null,null,31.89,30.45,32.2,31.84,32.14,32.51,33.65,33.94,36.54,36.38,38.66,39.37,43.85,44.22,44.1,41.23,39.36,37.88,38.79,34.37,32.1,30.97,31.89,31.39,30.49],&quot;label&quot;:&quot;每笔购买成本&quot;,&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;height&quot;:150,&quot;aria&quot;:&quot;每笔购买成本走势&quot;}"></div></div></div><h3>每个私信对话成本：平均 RM 10.71</h3><p class="lead">上半段 RM 9.70 → 下半段 RM 11.84（<span class="bad">▲ 上升 22%</span>）</p><div class="grid2"><div><p class="cap">各广告（本类只有 1 个 campaign）</p><div class="chart" data-spec="{&quot;type&quot;:&quot;hbar&quot;,&quot;items&quot;:[{&quot;label&quot;:&quot;Static_Promo_RM99&quot;,&quot;value&quot;:10.06,&quot;highlight&quot;:false,&quot;flag&quot;:&quot;&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 2,305）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;RM 10.06&quot;,&quot;k&quot;:&quot;每个私信对话成本&quot;},{&quot;v&quot;:&quot;RM 2,304.77&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;229&quot;,&quot;k&quot;:&quot;私信对话&quot;}]},{&quot;label&quot;:&quot;Video_Testimonial_A&quot;,&quot;value&quot;:10.71,&quot;highlight&quot;:false,&quot;flag&quot;:&quot;&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 3,578）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;RM 10.71&quot;,&quot;k&quot;:&quot;每个私信对话成本&quot;},{&quot;v&quot;:&quot;RM 3,577.55&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;334&quot;,&quot;k&quot;:&quot;私信对话&quot;}]},{&quot;label&quot;:&quot;Carousel_Packages&quot;,&quot;value&quot;:11.86,&quot;highlight&quot;:true,&quot;flag&quot;:&quot;▲ 最高&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 1,542）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;RM 11.86&quot;,&quot;k&quot;:&quot;每个私信对话成本&quot;},{&quot;v&quot;:&quot;RM 1,541.85&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;130&quot;,&quot;k&quot;:&quot;私信对话&quot;}]}],&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;avg&quot;:{&quot;value&quot;:10.71,&quot;label&quot;:&quot;平均 RM 10.71&quot;},&quot;aria&quot;:&quot;每个私信对话成本（按广告）&quot;}"></div></div><div><p class="cap">每日走势（近 7 天滚动平均）</p><div class="chart" data-spec="{&quot;type&quot;:&quot;line&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;values&quot;:[null,null,null,null,null,null,8.86,9.02,8.98,9.14,9.56,10.09,9.72,10.66,10.33,10.73,11.42,10.66,10.58,10.35,10.76,10.89,11.01,10.5,11.45,12.11,13.39,12.42,12.07,12.25,13.04],&quot;label&quot;:&quot;每个私信对话成本&quot;,&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;height&quot;:150,&quot;aria&quot;:&quot;每个私信对话成本走势&quot;}"></div></div></div><h3>每个潜在客户成本：平均 RM 18.67</h3><p class="lead">上半段 RM 19.97 → 下半段 RM 17.31（<span class="good">▼ 下降 13%</span>）</p><div class="grid2"><div><p class="cap">各广告（本类只有 1 个 campaign）</p><div class="chart" data-spec="{&quot;type&quot;:&quot;hbar&quot;,&quot;items&quot;:[{&quot;label&quot;:&quot;LeadForm_Video_A&quot;,&quot;value&quot;:16.58,&quot;highlight&quot;:false,&quot;flag&quot;:&quot;&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 2,570）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;RM 16.58&quot;,&quot;k&quot;:&quot;每个潜在客户成本&quot;},{&quot;v&quot;:&quot;RM 2,570.39&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;155&quot;,&quot;k&quot;:&quot;潜在客户&quot;}]},{&quot;label&quot;:&quot;LeadForm_Static_B&quot;,&quot;value&quot;:null,&quot;highlight&quot;:false,&quot;flag&quot;:&quot;&quot;,&quot;emptyText&quot;:&quot;无结果（花费 RM 323）&quot;,&quot;tip&quot;:[{&quot;v&quot;:&quot;—&quot;,&quot;k&quot;:&quot;每个潜在客户成本&quot;},{&quot;v&quot;:&quot;RM 323.01&quot;,&quot;k&quot;:&quot;花费&quot;},{&quot;v&quot;:&quot;0&quot;,&quot;k&quot;:&quot;潜在客户&quot;}]}],&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;avg&quot;:{&quot;value&quot;:18.67,&quot;label&quot;:&quot;平均 RM 18.67&quot;},&quot;aria&quot;:&quot;每个潜在客户成本（按广告）&quot;}"></div></div><div><p class="cap">每日走势（近 7 天滚动平均）</p><div class="chart" data-spec="{&quot;type&quot;:&quot;line&quot;,&quot;dates&quot;:[&quot;2026-10-01&quot;,&quot;2026-10-02&quot;,&quot;2026-10-03&quot;,&quot;2026-10-04&quot;,&quot;2026-10-05&quot;,&quot;2026-10-06&quot;,&quot;2026-10-07&quot;,&quot;2026-10-08&quot;,&quot;2026-10-09&quot;,&quot;2026-10-10&quot;,&quot;2026-10-11&quot;,&quot;2026-10-12&quot;,&quot;2026-10-13&quot;,&quot;2026-10-14&quot;,&quot;2026-10-15&quot;,&quot;2026-10-16&quot;,&quot;2026-10-17&quot;,&quot;2026-10-18&quot;,&quot;2026-10-19&quot;,&quot;2026-10-20&quot;,&quot;2026-10-21&quot;,&quot;2026-10-22&quot;,&quot;2026-10-23&quot;,&quot;2026-10-24&quot;,&quot;2026-10-25&quot;,&quot;2026-10-26&quot;,&quot;2026-10-27&quot;,&quot;2026-10-28&quot;,&quot;2026-10-29&quot;,&quot;2026-10-30&quot;,&quot;2026-10-31&quot;],&quot;values&quot;:[null,null,null,null,null,null,18.67,19.88,18.52,18.29,19.4,20.98,22.94,23.41,19.81,20.63,18.61,17.96,16.37,14.96,14.22,13.88,14.23,15.67,17.28,16.52,15.63,17.32,20.66,20.23,19.81],&quot;label&quot;:&quot;每个潜在客户成本&quot;,&quot;unit&quot;:&quot;money&quot;,&quot;cur&quot;:&quot;RM&quot;,&quot;height&quot;:150,&quot;aria&quot;:&quot;每个潜在客户成本走势&quot;}"></div></div></div></section><section class="rpt-sec"><h2><span class="no">5</span>表现最好和最差的广告</h2><p class="lead">不同目标的广告不能直接比成本，所以每个广告都和<b>同类结果的平均成本</b>比较。花费低于 RM 300 的广告样本太小，不参加排名。</p><div class="rank-h"><span class="ic good">▲</span>表现最好的 3 个广告</div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>广告</th><th>结果类型</th><th class="num">花费</th><th class="num">结果</th><th class="num">每个结果成本</th><th class="num">和同类平均比</th><th class="num">ROAS</th></tr></thead><tbody><tr><td>1</td><td><div class="nmw"><div class="nm">DPA_Catalog_Retarget</div><div class="nm-sub">Sales_Retargeting_Oct › Retarget_ATC_30D</div></div></td><td>购买</td><td class="num">RM 2,920.96</td><td class="num">132</td><td class="num">RM 22.13</td><td class="num"><span class="good">▼ 便宜 36%</span></td><td class="num">6.27</td></tr><tr><td>2</td><td><div class="nmw"><div class="nm">UGC_开箱_v2</div><div class="nm-sub">Sales_Prospecting_Oct › Broad_MY_25-45</div></div></td><td>购买</td><td class="num">RM 5,813.31</td><td class="num">227</td><td class="num">RM 25.61</td><td class="num"><span class="good">▼ 便宜 26%</span></td><td class="num">5.04</td></tr><tr><td>3</td><td><div class="nmw"><div class="nm">LeadForm_Video_A</div><div class="nm-sub">LeadForm_FreeTrial › Lookalike_1pct</div></div></td><td>潜在客户</td><td class="num">RM 2,570.39</td><td class="num">155</td><td class="num">RM 16.58</td><td class="num"><span class="good">▼ 便宜 11%</span></td><td class="num">—</td></tr></tbody></table></div><div class="rank-h"><span class="ic bad">▼</span>表现最差的 3 个广告</div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>广告</th><th>结果类型</th><th class="num">花费</th><th class="num">结果</th><th class="num">每个结果成本</th><th class="num">和同类平均比</th><th class="num">ROAS</th></tr></thead><tbody><tr><td>1</td><td><div class="nmw"><div class="nm">LeadForm_Static_B</div><div class="nm-sub">LeadForm_FreeTrial › Lookalike_1pct</div></div></td><td>潜在客户</td><td class="num">RM 323.01</td><td class="num">0</td><td class="num">—</td><td class="num"><span class="bad">✕ 没有结果</span></td><td class="num">—</td></tr><tr><td>2</td><td><div class="nmw"><div class="nm">Static_Banner_Old</div><div class="nm-sub">Sales_Prospecting_Oct › Interest_Beauty</div></div></td><td>购买</td><td class="num">RM 975.63</td><td class="num">2</td><td class="num">RM 487.81</td><td class="num"><span class="bad">▲ 平均的 14.1 倍</span></td><td class="num">0.20</td></tr><tr><td>3</td><td><div class="nmw"><div class="nm">Video_Testimonial_B</div><div class="nm-sub">Sales_Retargeting_Oct › Retarget_ATC_30D</div></div></td><td>购买</td><td class="num">RM 1,304.46</td><td class="num">17</td><td class="num">RM 76.73</td><td class="num"><span class="bad">▲ 平均的 2.2 倍</span></td><td class="num">1.63</td></tr></tbody></table></div></section><section class="rpt-sec"><h2><span class="no">6</span>下月建议</h2><ol class="sugg" style=""><li><div class="act"><span class="chip">暂停</span>暂停没有结果的广告：「LeadForm_Static_B」</div><div class="why">本期花了 RM 323.01，没有带来任何结果。省下的预算可以给表现好的广告。</div></li><li><div class="act"><span class="chip">暂停</span>暂停或替换成本过高的广告：「Static_Banner_Old」、「Video_Testimonial_B」</div><div class="why">「Static_Banner_Old」每笔购买成本 RM 487.81，是同类平均（RM 34.53）的 14.1 倍，ROAS 0.20；<br>「Video_Testimonial_B」每笔购买成本 RM 76.73，是同类平均（RM 34.53）的 2.2 倍，ROAS 1.63。</div></li><li><div class="act"><span class="chip">换素材</span>为广告「Video_Testimonial_A」准备新素材</div><div class="why">最近 7 天每个私信对话成本 RM 14.80，比刚开始投放的 7 天（RM 7.22）高 105%；点击率从 1.82% 降到 1.06%。这是常见的素材疲劳迹象，建议下月初换上新的视频/图片，旧素材逐步降预算。</div></li><li><div class="act"><span class="chip">加预算</span>给表现最好的广告加预算：「DPA_Catalog_Retarget」、「UGC_开箱_v2」（建议每 3–4 天加 20% 左右）</div><div class="why">「DPA_Catalog_Retarget」每笔购买成本 RM 22.13，比同类平均便宜 36%，ROAS 6.27，最近 7 天 RM 19.18；<br>「UGC_开箱_v2」每笔购买成本 RM 25.61，比同类平均便宜 26%，ROAS 5.04，最近 7 天 RM 21.35。一次加太多会让广告重新进入学习期，所以要慢慢加。</div></li><li><div class="act"><span class="chip">关注</span>关注私信对话成本上升</div><div class="why">下半段每个私信对话成本 RM 11.84，比上半段 RM 9.70 高 22%。下月要盯紧这类广告，必要时更新受众或优惠。</div></li><li><div class="act"><span class="chip">测试</span>每周上新 1–2 个素材做测试</div><div class="why">本期有 4 个广告效果差或出现疲劳，需要新素材接替。新素材先用小预算跑 3–5 天，再把好的加预算。</div></li></ol></section><footer class="rpt-foot">数据来源：Meta Ads Manager 导出（示例数据_2026年10月.csv） · 归因设置：7-day click or 1-day view · 金额单位：RM · 结果数与成本以 Meta 统计为准</footer></article></main>
+<div id="rpt-tip" class="rpt-tip" role="tooltip"></div>
+<script>(function reportRuntime(){
+  var NS='http://www.w3.org/2000/svg';
+  var tip=document.getElementById('rpt-tip');
+  if(!tip){tip=document.createElement('div');tip.id='rpt-tip';tip.className='rpt-tip';tip.setAttribute('role','tooltip');document.body.appendChild(tip);}
+  var cvs=document.createElement('canvas'),ctx=cvs.getContext('2d');
+  var FONT=getComputedStyle(document.body).fontFamily||'sans-serif';
+  function tw(s,size,weight){ctx.font=(weight||400)+' '+size+'px '+FONT;return ctx.measureText(String(s)).width;}
+  function fit(s,size,max){s=String(s);if(tw(s,size)<=max)return s;var lo=0,hi=s.length;while(lo<hi){var mid=(lo+hi+1)>>1;if(tw(s.slice(0,mid)+'…',size)<=max)lo=mid;else hi=mid-1;}return s.slice(0,lo)+'…';}
+  function E(tag,attrs,parent){var e=document.createElementNS(NS,tag);if(attrs)for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  function T(parent,x,y,s,cls,anchor){var t=E('text',{x:x,y:y,'class':cls||'','text-anchor':anchor||'start'},parent);t.textContent=s;return t;}
+  function money(v,cur,d){if(v==null||!isFinite(v))return '—';return cur+' '+v.toLocaleString('en-MY',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  function fmt(v,unit,cur){
+    if(v==null||!isFinite(v))return '—';
+    if(unit==='money')return money(v,cur,Math.abs(v)>=1000?0:2);
+    if(unit==='dec')return v.toLocaleString('en-MY',{minimumFractionDigits:1,maximumFractionDigits:1});
+    return Math.round(v).toLocaleString('en-MY');
+  }
+  function axisFmt(v){if(v>=10000)return (v/1000).toLocaleString('en-MY',{maximumFractionDigits:1})+'K';return v.toLocaleString('en-MY',{maximumFractionDigits:v<10&&v%1?1:0});}
+  function nice(max,n){if(!(max>0))max=1;var raw=max/n,p=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/p;var step=(f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p;var top=Math.ceil(max/step-1e-9)*step;var t=[];for(var i=0;i*step<=top+step*1e-6;i++)t.push(+(i*step).toFixed(10));return t;}
+  var WD=['周日','周一','周二','周三','周四','周五','周六'];
+  function dlabel(iso){var p=iso.split('-');return (+p[1])+'月'+(+p[2])+'日 '+WD[new Date(+p[0],+p[1]-1,+p[2]).getDay()];}
+  function short(iso){var p=iso.split('-');return (+p[1])+'/'+(+p[2]);}
+  function lastIdx(a){for(var i=a.length-1;i>=0;i--)if(a[i]!=null)return i;return -1;}
+  function topPath(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h));return 'M'+x+','+(y+h)+'V'+(y+r)+'Q'+x+','+y+' '+(x+r)+','+y+'H'+(x+w-r)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+r)+'V'+(y+h)+'Z';}
+  function rightPath(x,y,w,h,r){r=Math.max(0,Math.min(r,h/2,w));return 'M'+x+','+y+'H'+(x+w-r)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+r)+'V'+(y+h-r)+'Q'+(x+w)+','+(y+h)+' '+(x+w-r)+','+(y+h)+'H'+x+'Z';}
+  function svgRoot(box,w,h,label){var s=E('svg',{viewBox:'0 0 '+w+' '+h,width:w,height:h,role:'img','aria-label':label||''},box);s.style.width='100%';s.style.height='auto';return s;}
+  function legend(box,items){var lg=document.createElement('div');lg.className='lg';items.forEach(function(it){var s=document.createElement('span');s.className='lg-item';var k=document.createElement('i');k.className='lg-key '+(it.shape||'rect');k.style.background=it.color;s.appendChild(k);s.appendChild(document.createTextNode(it.label));lg.appendChild(s);});box.appendChild(lg);}
+  function setTip(node,data){node._tip=data;}
+  function yGrid(svg,ticks,top,ml,w,mr,mt,ph){
+    var labels=ticks.map(axisFmt);
+    ticks.forEach(function(t,i){var yy=Math.round(mt+ph-(t/top)*ph)+0.5;E('line',{x1:ml,x2:w-mr,y1:yy,y2:yy,'class':i===0?'axis':'grid'},svg);T(svg,ml-6,yy+4,labels[i],'ax','end');});
+  }
+  function yLabelWidth(ticks){return Math.ceil(Math.max.apply(null,ticks.map(function(t){return tw(axisFmt(t),11);})))+10;}
+  function xLabels(svg,dates,ml,band,pw,h){var n=dates.length,step=Math.max(1,Math.ceil(n/Math.max(1,Math.floor(pw/46))));for(var i=0;i<n;i+=step)T(svg,ml+i*band+band/2,h-6,short(dates[i]),'ax','middle');}
+
+  var R={};
+  /* 每日柱状图（可叠加一条同单位的平均线） */
+  R.daily=function(box,s,w){
+    var hasLine=!!(s.line&&s.line.some(function(v){return v!=null;}));
+    var barColor=s.barColor||'var(--bar-soft)';
+    if(hasLine)legend(box,[{label:s.barLabel,color:barColor,shape:'rect'},{label:s.lineLabel,color:'var(--line-strong)',shape:'line'}]);
+    var h=s.height||200,mt=10,mb=24,mr=8;
+    var vals=s.bars.concat(hasLine?s.line:[]).filter(function(v){return v!=null;});
+    var ticks=nice(Math.max.apply(null,vals.concat([0])),4),top=ticks[ticks.length-1]||1;
+    var ml=yLabelWidth(ticks);
+    var svg=svgRoot(box,w,h,s.aria);
+    var pw=w-ml-mr,ph=h-mt-mb,n=s.dates.length,band=pw/n;
+    function y(v){return mt+ph-(v/top)*ph;}
+    yGrid(svg,ticks,top,ml,w,mr,mt,ph);
+    var bw=band>=4?Math.min(24,band-2):Math.max(1,band*0.6);
+    s.bars.forEach(function(v,i){if(v==null||v<=0)return;var x=ml+i*band+(band-bw)/2,yy=y(v);var p=E('path',{d:topPath(x,yy,bw,mt+ph-yy,4)},svg);p.style.fill=barColor;});
+    if(hasLine){
+      var d='',pen=false;
+      s.line.forEach(function(v,i){if(v==null){pen=false;return;}var x=ml+i*band+band/2;d+=(pen?'L':'M')+x.toFixed(1)+','+y(v).toFixed(1);pen=true;});
+      var ln=E('path',{d:d,'class':'ln'},svg);ln.style.stroke='var(--line-strong)';
+      var li=lastIdx(s.line);var c=E('circle',{cx:ml+li*band+band/2,cy:y(s.line[li]),r:4,'class':'dot'},svg);c.style.fill='var(--line-strong)';
+    }
+    xLabels(svg,s.dates,ml,band,pw,h);
+    s.dates.forEach(function(dt,i){
+      var r=E('rect',{x:ml+i*band,y:mt,width:band,height:ph,'class':'hit'},svg);
+      var rows=[{v:fmt(s.bars[i],s.unit,s.cur),k:s.barLabel,key:'rect',color:barColor}];
+      if(hasLine)rows.push({v:fmt(s.line[i],s.lineUnit||s.unit,s.cur),k:s.lineLabel,key:'line',color:'var(--line-strong)'});
+      if(s.extra&&s.extra[i])s.extra[i].forEach(function(x){rows.push(x);});
+      setTip(r,{title:dlabel(dt),rows:rows});
+    });
+  };
+  /* 折线图（单条线） */
+  R.line=function(box,s,w){
+    var vals=s.values.filter(function(v){return v!=null;});
+    if(vals.length<2){var p=document.createElement('p');p.className='empty';p.textContent=s.emptyText||'数据不足，画不出趋势。';box.appendChild(p);return;}
+    var h=s.height||190,mt=14,mb=24;
+    var ticks=nice(Math.max.apply(null,vals),4),top=ticks[ticks.length-1]||1;
+    var ml=yLabelWidth(ticks);
+    var li=lastIdx(s.values),endLab=fmt(s.values[li],s.unit,s.cur);
+    var mr=Math.ceil(tw(endLab,12,600))+16;
+    var svg=svgRoot(box,w,h,s.aria);
+    var pw=w-ml-mr,ph=h-mt-mb,n=s.dates.length,band=pw/n;
+    function y(v){return mt+ph-(v/top)*ph;}
+    function xx(i){return ml+i*band+band/2;}
+    yGrid(svg,ticks,top,ml,w,mr,mt,ph);
+    var segs=[],cur=[];
+    s.values.forEach(function(v,i){if(v==null){if(cur.length)segs.push(cur);cur=[];}else cur.push(i);});
+    if(cur.length)segs.push(cur);
+    var color=s.color||'var(--accent)';
+    segs.forEach(function(sg){
+      if(sg.length>1){var a='M'+xx(sg[0]).toFixed(1)+','+(mt+ph);sg.forEach(function(i){a+='L'+xx(i).toFixed(1)+','+y(s.values[i]).toFixed(1);});a+='L'+xx(sg[sg.length-1]).toFixed(1)+','+(mt+ph)+'Z';var ar=E('path',{d:a,'class':'area'},svg);ar.style.fill=color;}
+      var d='';sg.forEach(function(i,k){d+=(k?'L':'M')+xx(i).toFixed(1)+','+y(s.values[i]).toFixed(1);});
+      var ln=E('path',{d:d,'class':'ln'},svg);ln.style.stroke=color;
+    });
+    var c=E('circle',{cx:xx(li),cy:y(s.values[li]),r:4,'class':'dot'},svg);c.style.fill=color;
+    T(svg,xx(li)+9,y(s.values[li])+4,endLab,'val');
+    xLabels(svg,s.dates,ml,band,pw,h);
+    s.dates.forEach(function(dt,i){var r=E('rect',{x:ml+i*band,y:mt,width:band,height:ph,'class':'hit'},svg);setTip(r,{title:dlabel(dt),rows:[{v:fmt(s.values[i],s.unit,s.cur),k:s.label,key:'line',color:color}]});});
+  };
+  /* 横向条形图 */
+  R.hbar=function(box,s,w){
+    var items=s.items,rowH=34,bh=18,mt=s.avg?24:6,mb=4,h=mt+items.length*rowH+mb;
+    var labelW=Math.min(Math.floor(w*0.4),Math.ceil(Math.max.apply(null,items.map(function(it){return tw(it.label,12.5);})))+16);
+    var valLabs=items.map(function(it){return it.value==null?(it.emptyText||'无结果'):fmt(it.value,s.unit,s.cur)+(it.flag?'  '+it.flag:'');});
+    var vm=Math.ceil(Math.max.apply(null,valLabs.map(function(l){return tw(l,12,600);})))+14;
+    var x0=labelW,x1=Math.max(x0+40,w-vm);
+    var max=Math.max.apply(null,items.map(function(it){return it.value||0;}).concat([s.avg?s.avg.value:0]))||1;
+    function x(v){return x0+(v/max)*(x1-x0);}
+    var svg=svgRoot(box,w,h,s.aria);
+    if(s.avg){var ax=Math.round(x(s.avg.value))+0.5;E('line',{x1:ax,x2:ax,y1:mt-6,y2:h-mb,'class':'ref'},svg);var lw=tw(s.avg.label,11);T(svg,ax,mt-11,s.avg.label,'ax',ax+lw/2>w?'end':(ax-lw/2<0?'start':'middle'));}
+    E('line',{x1:x0+0.5,x2:x0+0.5,y1:mt-2,y2:h-mb,'class':'axis'},svg);
+    items.forEach(function(it,i){
+      var cy=mt+i*rowH+rowH/2;
+      T(svg,x0-10,cy+4,fit(it.label,12.5,labelW-16),'lbl','end');
+      if(it.value!=null){var bw=Math.max(1,x(it.value)-x0-1);var p=E('path',{d:rightPath(x0+1,cy-bh/2,bw,bh,4)},svg);p.style.fill=it.highlight?'var(--critical)':(s.color||'var(--accent)');T(svg,x0+1+bw+8,cy+4,valLabs[i],'val');}
+      else{var bgw=tw(valLabs[i],12.5)+8;var bg=E('rect',{x:x0+4,y:cy-9,width:bgw,height:18},svg);bg.style.fill='var(--surface)';T(svg,x0+8,cy+4,valLabs[i],'lbl');}
+      var hit=E('rect',{x:0,y:mt+i*rowH,width:w,height:rowH,'class':'hit',tabindex:0},svg);
+      setTip(hit,{title:it.label,rows:it.tip||[]});
+    });
+  };
+  /* 分段条（占比） */
+  R.seg=function(box,s,w){
+    var h=28,gap=2,items=s.items.filter(function(it){return it.value>0;});
+    var total=items.reduce(function(a,b){return a+b.value;},0)||1;
+    var svg=svgRoot(box,w,h,s.aria),avail=w-gap*(items.length-1),x=0;
+    items.forEach(function(it){
+      var bw=avail*it.value/total,share=it.value/total*100;
+      var r=E('rect',{x:x,y:0,width:Math.max(bw,0.75),height:h,rx:4,ry:4,'class':'seg',tabindex:0},svg);r.style.fill=it.color;
+      var lab=Math.round(share)+'%';
+      if(tw(lab,12,600)+14<bw){var t=T(svg,x+7,h/2+4.5,lab,'seg-lab'+(it.dark?' dark':''));t.style.pointerEvents='none';}
+      setTip(r,{title:it.label,rows:[{v:it.valueText,k:'花费',key:'rect',color:it.color},{v:share.toFixed(1)+'%',k:'占总花费'}]});
+      x+=bw+gap;
+    });
+    legend(box,items.map(function(it){return {label:it.label,color:it.color,shape:'rect'};}));
+  };
+
+  /* 悬停提示 */
+  var hot=null;
+  function showTip(data,x,y){
+    tip.textContent='';
+    if(data.title){var h=document.createElement('div');h.className='tt-title';h.textContent=data.title;tip.appendChild(h);}
+    (data.rows||[]).forEach(function(r){var row=document.createElement('div');row.className='tt-row';var k=document.createElement('span');k.className='tt-key '+(r.key||'');if(r.color&&r.key)k.style.background=r.color;row.appendChild(k);var v=document.createElement('b');v.textContent=r.v;row.appendChild(v);var l=document.createElement('span');l.className='tt-lab';l.textContent=r.k;row.appendChild(l);tip.appendChild(row);});
+    tip.style.display='block';place(x,y);
+  }
+  function place(x,y){var w=tip.offsetWidth,h=tip.offsetHeight,vw=window.innerWidth,vh=window.innerHeight;var L=x+14,Tp=y+14;if(L+w>vw-8)L=x-14-w;if(L<8)L=8;if(Tp+h>vh-8)Tp=y-14-h;if(Tp<8)Tp=8;tip.style.left=L+'px';tip.style.top=Tp+'px';}
+  function clear(){if(hot){hot.classList.remove('hot');hot=null;}tip.style.display='none';}
+  function find(n){while(n&&n!==document){if(n._tip)return n;n=n.parentNode;}return null;}
+  document.addEventListener('pointerover',function(e){var n=find(e.target);if(n){if(hot&&hot!==n)hot.classList.remove('hot');hot=n;n.classList.add('hot');showTip(n._tip,e.clientX,e.clientY);}else clear();});
+  document.addEventListener('pointermove',function(e){if(hot)place(e.clientX,e.clientY);});
+  document.addEventListener('focusin',function(e){var n=find(e.target);if(n){clear();hot=n;n.classList.add('hot');var r=n.getBoundingClientRect();showTip(n._tip,r.left+Math.min(r.width/2,160),r.top+r.height/2);}});
+  document.addEventListener('focusout',clear);
+  window.addEventListener('scroll',clear,{passive:true});
+
+  function renderAll(root){
+    (root||document).querySelectorAll('.chart[data-spec]').forEach(function(box){
+      var spec;try{spec=JSON.parse(box.getAttribute('data-spec'));}catch(e){return;}
+      var w=Math.max(260,Math.floor(box.clientWidth));
+      box.textContent='';
+      if(R[spec.type])R[spec.type](box,spec,w);
+    });
+  }
+  var lastW=0,rt;
+  window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){if(window.innerWidth!==lastW){lastW=window.innerWidth;renderAll();}},150);});
+  window.addEventListener('beforeprint',function(){renderAll();});
+  window.addEventListener('afterprint',function(){renderAll();});
+  function boot(){lastW=window.innerWidth;renderAll();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  return renderAll;
+})();</script>
+</body>
+</html>
