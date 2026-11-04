@@ -182,6 +182,14 @@
     .case-body .points li { margin: 0 0 6px; padding-left: 4px; }
     .case-body .points li::marker { color: var(--accent); }
     .case-body .play { margin: 16px 0 0; }
+    .flow { border: 1px solid var(--rule); border-radius: 12px; padding: 16px; margin: 8px 0 24px; display: grid; gap: 16px; background: color-mix(in srgb, var(--tint) 50%, transparent); }
+    .flow h5 { font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+    .flow ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; }
+    .flow li:not(.arr) { background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 6px 10px; font-size: 0.875rem; line-height: 1.3; max-width: 100%; }
+    .flow li b { display: block; font-weight: 600; }
+    .flow li span { color: var(--muted); font-size: 0.8125rem; }
+    .flow .arr { color: var(--accent); font-weight: 600; }
+    .results + .shot-note { margin-top: 24px; }
     @media (min-width: 600px) { .shots { grid-template-columns: 1fr 1fr; align-items: start; } }
 
     /* ---------- Experience ---------- */
@@ -432,8 +440,8 @@
     <section id="side-project" aria-labelledby="side-title">
       <div class="wrap">
         <div class="section-head">
-          <h2 id="side-title">Side project</h2>
-          <p>A promo mini-game concept, built with AI, showing how a retail brand could turn a store opening into something people want to play.</p>
+          <h2 id="side-title">Side projects</h2>
+          <p>Two things I built with AI outside my day job: a promo game concept for a retail brand, and a multi-agent system that runs my own stock research.</p>
         </div>
 
         <article class="case">
@@ -458,6 +466,60 @@
             </ul>
             <a class="shot" href="demo/claw/"><img src="assets/claw-promo.jpg" alt="The Grand Opening Grab game: a purple claw machine full of colourful sewing buttons, next to the prize list" width="1200" height="854" loading="lazy"></a>
             <p class="play"><a class="btn" href="demo/claw/">Play the demo</a></p>
+          </div>
+        </article>
+
+        <article class="case">
+          <div class="case-side">
+            <h3>AI trading desk: ten agents, one human decision</h3>
+            <dl class="meta">
+              <dt>Type</dt><dd>Personal multi-agent system</dd>
+              <dt>Market</dt><dd>Bursa Malaysia</dd>
+              <dt>Built with</dt><dd>Claude Code, Python</dd>
+              <dt>Runs</dt><dd>On a schedule, every trading day</dd>
+            </dl>
+          </div>
+          <div class="case-body">
+            <h4>What it does</h4>
+            <p>Python agents each do one job: read the market, screen stocks, write trade plans, control risk, watch prices, flag company announcements and review trades. Claude acts as the manager and as an independent reviewer that checks every recommendation before it reaches me. Orders are always placed by me.</p>
+            <div class="flow" role="group" aria-label="How the system runs each trading day">
+              <div class="flow-row"><h5>08:30, before the open</h5><ol>
+                <li><b>Tide</b><span>Morning risk check. Can stop trading, never approve it</span></li>
+              </ol></div>
+              <div class="flow-row"><h5>Every hour while the market is open</h5><ol>
+                <li><b>Sentinel</b><span>Watches stops, targets and entry zones</span></li>
+              </ol></div>
+              <div class="flow-row"><h5>17:40, after the close</h5><ol>
+                <li><b>Tide</b><span>Market traffic light</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Seeker</b><span>Screens stocks</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Archer</b><span>Writes plans</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Warden</b><span>Approves, cuts or blocks</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Simulator</b><span>2,000 paths per plan</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Paper trades</b><span>Test the rules</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Echo</b><span>Flags announcements</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Mirror</b><span>Reviews real trades</span></li>
+              </ol></div>
+              <div class="flow-row"><h5>18:15, supervision</h5><ol>
+                <li><b>Sterling</b><span>Checks every agent</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Arbiter</b><span>Independent review</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Telegram brief</b><span>Sent to my phone</span></li><li class="arr" aria-hidden="true">›</li>
+                <li><b>Me</b><span>Decide and place orders</span></li>
+              </ol></div>
+            </div>
+            <h4>Design choices that mattered</h4>
+            <ul class="points">
+              <li>Fees go into every backtest. Once they did, the original 3–7 day idea turned out to lose money at small size, so the rules changed, and reports say plainly the edge may be close to zero.</li>
+              <li>The reviewer reads the code and runs tests, not just descriptions. It caught a bug that would have silenced exchange-query alerts, and a sizing rule that approved trades too small to cover fees.</li>
+              <li>Failures are isolated. If a nice-to-have input breaks, I lose a hint, never a stop-loss alert. Checked facts are sent as they are, with the reviewer's notes attached, instead of being rewritten by the model.</li>
+              <li>Paper trading comes before conclusions: nothing is judged before 30 paper trades or 20 real ones.</li>
+            </ul>
+            <h4>Results</h4>
+            <ul class="results">
+              <li><strong>1 week</strong><span>to build, through conversation with Claude</span></li>
+              <li><strong>10–15 min</strong><span>of my time each day</span></li>
+              <li><strong>4</strong><span>scheduled jobs every trading day</span></li>
+            </ul>
+            <p class="shot-note">Why it's here: it's the same pattern a marketing team needs for reporting and alerts. Scheduled data pulls, rules with guardrails, a review step before anything goes out, and a short daily brief. A personal learning project; no stock picks or returns are shown, and nothing here is investment advice.</p>
           </div>
         </article>
       </div>
