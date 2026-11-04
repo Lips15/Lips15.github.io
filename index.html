@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lips | Digital Marketing &amp; AIGC</title>
-  <meta name="description" content="Lips (Tan Hiok Lip): digital marketing and analytics professional with 5+ years in performance marketing, marketing analytics and ad operations, working with generative AI. Based in Kuala Lumpur, open to remote roles.">
+  <meta name="description" content="Lips (Tan Hiok Lip): digital marketer in Kuala Lumpur working across performance marketing, analytics and generative AI. Open to remote roles.">
 
   <!-- Shown when the link is shared on LinkedIn, WhatsApp, Slack, etc. -->
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lips15.github.io/">
   <meta property="og:title" content="Lips | Digital Marketing &amp; AIGC">
-  <meta property="og:description" content="Performance marketing, analytics and ad operations, made faster with generative AI. Open to remote roles.">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:description" content="Performance marketing and analytics, made faster with generative AI. Open to remote roles.">
+  <meta property="og:image" content="https://lips15.github.io/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314213D'/%3E%3Ccircle cx='22' cy='10' r='4' fill='%232F5BEA'/%3E%3C/svg%3E">
 
@@ -26,7 +30,6 @@
       --accent: #2F5BEA;
       --rule: #E1E4EA;
       --tint: #EAEFFE;
-      --ph: #FFF3C4;
 
       --serif: "Fraunces", Georgia, "Times New Roman", serif;
       --sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -42,7 +45,6 @@
         --accent: #8EA6FF;
         --rule: #243049;
         --tint: #18223A;
-        --ph: #4A3F12;
       }
     }
 
@@ -65,9 +67,6 @@
 
     .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 
-    /* Placeholder highlight, for drafting new content */
-    .ph { background: var(--ph); color: inherit; padding: 0 0.15em; border-radius: 2px; }
-
     .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--paper); padding: 8px 12px; z-index: 10; }
     .skip:focus { left: 8px; }
 
@@ -86,12 +85,17 @@
     .nav a:hover { color: var(--ink); }
 
     /* ---------- Hero ---------- */
-    .hero { padding: 64px 0 56px; }
+    .hero { padding: 48px 0 56px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+    .photo img {
+      width: 88px; height: 88px; object-fit: cover; border-radius: 50%;
+      margin-bottom: 24px; background: var(--rule);
+    }
     .hero h1 {
       font-family: var(--serif);
       font-weight: 420;
       font-variation-settings: "SOFT" 100, "opsz" 144;
-      font-size: clamp(2.5rem, 9vw, 5.25rem);
+      font-size: clamp(2.5rem, 8vw, 4.75rem);
       line-height: 1.02;
       letter-spacing: -0.025em;
       margin: 0 0 28px;
@@ -140,6 +144,36 @@
     .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .chips li { background: var(--tint); border-radius: 6px; padding: 5px 11px; font-size: 0.9375rem; }
 
+    /* ---------- Case studies ---------- */
+    .case { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 40px 0; border-top: 1px solid var(--rule); }
+    .case:first-of-type { border-top: 0; padding-top: 0; }
+    .case h3 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-variation-settings: "SOFT" 60, "opsz" 48;
+      font-size: clamp(1.5rem, 3.6vw, 1.875rem);
+      line-height: 1.18; letter-spacing: -0.01em;
+      margin: 0 0 16px;
+      text-wrap: balance;
+    }
+    .meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0; font-size: 0.9375rem; }
+    .meta dt { color: var(--muted); }
+    .meta dd { margin: 0; }
+    .case-body h4 { font-size: 0.9375rem; font-weight: 600; margin: 0 0 4px; color: var(--muted); }
+    .case-body p { margin: 0 0 20px; max-width: 38em; }
+    .results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
+    .results li { border-top: 2px solid var(--ink); padding-top: 10px; }
+    .results strong {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-variation-settings: "SOFT" 100, "opsz" 72;
+      font-size: clamp(1.375rem, 5.2vw, 2rem); line-height: 1.1; letter-spacing: -0.02em;
+      font-variant-numeric: lining-nums;
+      white-space: nowrap;
+    }
+    .results span { display: block; color: var(--muted); font-size: 0.875rem; line-height: 1.4; margin-top: 4px; }
+
     /* ---------- Experience ---------- */
     .job { display: grid; grid-template-columns: 1fr; gap: 18px; padding: 36px 0; border-top: 1px solid var(--rule); }
     .job:first-of-type { border-top: 0; padding-top: 0; }
@@ -161,33 +195,6 @@
     .role li { margin: 0 0 6px; padding-left: 4px; }
     .role li::marker { color: var(--accent); }
 
-    /* ---------- Case studies (template kept for later) ---------- */
-    .case { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 40px 0; border-top: 1px solid var(--rule); }
-    .case:first-of-type { border-top: 0; padding-top: 0; }
-    .case h3 {
-      font-family: var(--serif);
-      font-weight: 500;
-      font-variation-settings: "SOFT" 60, "opsz" 48;
-      font-size: clamp(1.5rem, 3.6vw, 1.875rem);
-      line-height: 1.18; letter-spacing: -0.01em;
-      margin: 0 0 16px;
-    }
-    .meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0; font-size: 0.9375rem; }
-    .meta dt { color: var(--muted); }
-    .meta dd { margin: 0; }
-    .case-body h4 { font-size: 0.9375rem; font-weight: 600; margin: 0 0 4px; color: var(--muted); }
-    .case-body p { margin: 0 0 20px; max-width: 38em; }
-    .results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
-    .results li { border-top: 2px solid var(--ink); padding-top: 10px; }
-    .results strong {
-      display: block;
-      font-family: var(--serif);
-      font-weight: 500;
-      font-variation-settings: "SOFT" 100, "opsz" 72;
-      font-size: clamp(1.375rem, 5.2vw, 2rem); line-height: 1.1; letter-spacing: -0.02em;
-    }
-    .results span { color: var(--muted); font-size: 0.875rem; }
-
     /* ---------- Contact ---------- */
     .contact { padding: 80px 0 96px; }
     .contact h2 { font-size: clamp(2rem, 6.4vw, 3.5rem); max-width: 16ch; margin-bottom: 20px; text-wrap: balance; }
@@ -198,28 +205,33 @@
 
     /* ---------- Load moment (hero only) ---------- */
     @media (prefers-reduced-motion: no-preference) {
-      .hero h1, .hero .lead, .hero-actions, .facts { animation: rise 700ms cubic-bezier(.2,.7,.2,1) both; }
-      .hero .lead { animation-delay: 90ms; }
-      .hero-actions { animation-delay: 160ms; }
-      .facts { animation-delay: 220ms; }
+      .photo, .hero h1, .hero .lead, .hero-actions, .facts { animation: rise 700ms cubic-bezier(.2,.7,.2,1) both; }
+      .hero h1 { animation-delay: 40ms; }
+      .hero .lead { animation-delay: 110ms; }
+      .hero-actions { animation-delay: 170ms; }
+      .facts { animation-delay: 230ms; }
       @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
     }
 
     /* ---------- Larger screens ---------- */
     @media (min-width: 720px) {
       :root { --gutter: 32px; }
-      .hero { padding: 104px 0 80px; }
+      .hero { padding: 88px 0 80px; }
       .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       section { padding: 96px 0; }
       .skills { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
     }
     @media (min-width: 900px) {
-      .job { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; padding: 44px 0; }
+      .hero-grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 64px; align-items: start; }
+      .hero-text { grid-column: 1; grid-row: 1; }
+      .photo { grid-column: 2; grid-row: 1; }
+      .photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; border-radius: 16px; margin: 8px 0 0; }
       .case { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding: 56px 0; }
       .case-side { position: sticky; top: 88px; align-self: start; }
+      .job { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; padding: 44px 0; }
     }
     @media (max-width: 380px) {
-      .nav { gap: 14px; font-size: 0.875rem; }
+      .nav { gap: 12px; font-size: 0.875rem; }
     }
 
     @media print {
@@ -246,21 +258,29 @@
     <!-- ================= HERO / INTRO ================= -->
     <div class="hero" id="top">
       <div class="wrap">
-        <h1>Performance marketing, made faster with generative&nbsp;AI.</h1>
-        <p class="lead">
-          I'm Lips, a digital marketing and analytics professional with 5+ years across performance marketing, marketing analytics and ad operations in the automotive, marketplace and events industries. I lead marketing for the auto category at Mudah.my, one of Malaysia's largest online marketplaces, and use generative AI tools like ChatGPT and Claude to plan, write and analyse campaigns faster. I'm looking for a remote role with a global team.
-        </p>
-        <div class="hero-actions">
-          <a class="btn" href="https://www.linkedin.com/in/hiok-lip-tan-218719101/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
-            Connect on LinkedIn
-          </a>
-          <span class="status">Open to remote roles</span>
+        <div class="hero-grid">
+          <picture class="photo">
+            <source media="(min-width: 900px)" srcset="assets/lips-portrait.jpg">
+            <img src="assets/lips-avatar.jpg" alt="Portrait of Lips" width="240" height="240">
+          </picture>
+          <div class="hero-text">
+            <h1>Performance marketing, made faster with generative&nbsp;AI.</h1>
+            <p class="lead">
+              I'm Lips, a digital marketer based in Kuala Lumpur. Since starting my career in 2016 I've worked across fashion retail, online marketplaces, automotive and agency settings, most recently as Digital Marketing Assistant Manager at TWO L and before that five years at Mudah.my. I use generative AI tools like ChatGPT and Claude to analyse data, draft reports and write ad copy faster. I'm looking for a remote role with a global team.
+            </p>
+            <div class="hero-actions">
+              <a class="btn" href="https://www.linkedin.com/in/hiok-lip-tan-218719101/" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+                Connect on LinkedIn
+              </a>
+              <span class="status">Open to remote roles</span>
+            </div>
+          </div>
         </div>
 
         <dl class="facts">
           <div><dt>Focus</dt><dd>Digital marketing &amp; AIGC</dd></div>
-          <div><dt>Experience</dt><dd>5+ years</dd></div>
+          <div><dt>Working since</dt><dd>2016</dd></div>
           <div><dt>Based in</dt><dd>Kuala Lumpur, GMT+8</dd></div>
           <div><dt>Languages</dt><dd>English, Malay, Mandarin</dd></div>
         </dl>
@@ -280,35 +300,35 @@
             <h3>Performance marketing</h3>
             <p>Planning and running paid campaigns against business goals.</p>
             <ul>
-              <li>Google Ads and Meta Ads campaigns</li>
-              <li>Targeting, keyword and bid strategy</li>
-              <li>Budget management and campaign pacing</li>
-              <li>Direct and programmatic campaign delivery</li>
-              <li>Partnerships and integrated campaigns</li>
+              <li>Meta Ads and Google Ads campaigns</li>
+              <li>Targeting, audience and creative testing</li>
+              <li>Budget planning, forecasting and pacing</li>
+              <li>Lead generation and store-visit campaigns</li>
+              <li>Social media content planning</li>
             </ul>
           </div>
 
           <div class="skill-group">
-            <h3>Analytics and ad operations</h3>
+            <h3>Analytics and operations</h3>
             <p>Making sure results are tracked correctly and acted on.</p>
             <ul>
               <li>GA4 and GTM measurement setup</li>
-              <li>Campaign and website performance analysis</li>
-              <li>Looker Studio dashboards and reporting</li>
-              <li>Inventory forecasting and ad delivery troubleshooting</li>
-              <li>Sharing insights with sales, product and BI teams</li>
+              <li>Matching ad results to store and sales data</li>
+              <li>Looker Studio dashboards and revenue reporting</li>
+              <li>Direct and programmatic ad operations</li>
+              <li>Sales operations and client proposals</li>
             </ul>
           </div>
 
           <div class="skill-group">
             <h3>AIGC</h3>
-            <p>Using generative AI to work faster, with human review.</p>
+            <p>Using generative AI to work faster, with every number checked.</p>
             <ul>
-              <li>Ad copy and content drafts with ChatGPT and Claude</li>
-              <li>Creating and testing creative variations</li>
-              <li>Research and campaign planning with AI</li>
-              <li>Faster data analysis and report writing</li>
-              <li>Publishing content on WordPress</li>
+              <li>Data analysis and report drafting with ChatGPT and Claude</li>
+              <li>Management slide decks built with AI</li>
+              <li>Ad copy variations and keyword ideas</li>
+              <li>Ad creative and social post templates</li>
+              <li>Prompt writing</li>
             </ul>
           </div>
         </div>
@@ -332,66 +352,56 @@
       </div>
     </section>
 
-    <!-- ================= CASE STUDIES (hidden until content is ready) =================
-         To add case studies: paste this block back in as a real <section>, fill in the text,
-         and add <a href="#work">Work</a> to the nav.
-
-    <section id="work" aria-labelledby="work-title">
-      <div class="wrap">
-        <div class="section-head">
-          <h2 id="work-title">Selected work</h2>
-          <p>Three projects, with the problem, what I did and the result.</p>
-        </div>
-        <article class="case">
-          <div class="case-side">
-            <h3>Case study title</h3>
-            <dl class="meta">
-              <dt>Industry</dt><dd>…</dd>
-              <dt>My role</dt><dd>…</dd>
-              <dt>Channels</dt><dd>…</dd>
-              <dt>Timeline</dt><dd>…</dd>
-            </dl>
-          </div>
-          <div class="case-body">
-            <h4>Challenge</h4>
-            <p>…</p>
-            <h4>What I did</h4>
-            <p>…</p>
-            <h4>Results</h4>
-            <ul class="results">
-              <li><strong>+00%</strong><span>metric</span></li>
-              <li><strong>00</strong><span>metric</span></li>
-              <li><strong>00x</strong><span>metric</span></li>
-            </ul>
-          </div>
-        </article>
-      </div>
-    </section>
-    ================================================================================== -->
-
     <!-- ================= EXPERIENCE ================= -->
     <section id="experience" aria-labelledby="experience-title">
       <div class="wrap">
         <div class="section-head">
           <h2 id="experience-title">Experience</h2>
-          <p>Digital marketing roles in Malaysia since 2017.</p>
+          <p>Roles in Malaysia, most recent first.</p>
         </div>
 
         <article class="job">
           <div>
+            <p class="job-org">TWO L</p>
+            <p class="job-when">Sep 2026 – Present</p>
+            <p class="job-about">Malaysian fashion retail brand</p>
+          </div>
+          <div class="role">
+            <h3>Digital Marketing Assistant Manager</h3>
+            <ul>
+              <li>Plan and manage paid social campaigns for store promotions, branch launches and franchise recruitment.</li>
+              <li>Oversee social media content planning and publishing.</li>
+              <li>Analyse campaign, channel and store data and report to management with recommendations.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="job">
+          <div>
             <p class="job-org">Mudah.my Sdn Bhd</p>
-            <p class="job-when">Feb 2021 – Present</p>
+            <p class="job-when">Feb 2021 – Aug 2026</p>
             <p class="job-about">One of Malaysia's largest online marketplaces</p>
           </div>
           <div>
             <div class="role">
               <h3>Marketing Lead, Auto Category</h3>
-              <p class="dates">Jan 2024 – Present</p>
+              <p class="dates">Jan 2024 – Aug 2026</p>
               <ul>
-                <li>Grew the automotive category through content, campaign and partnership initiatives.</li>
-                <li>Implemented GA4 and GTM measurement frameworks to improve tracking accuracy.</li>
-                <li>Analysed campaign and website data to produce actionable business insights.</li>
-                <li>Worked across sales, marketing, product and BI teams to improve engagement and revenue.</li>
+                <li>Set marketing direction for the automotive category across content, campaigns and partnerships.</li>
+                <li>Led the rollout of a GA4 and Google Tag Manager measurement framework, improving tracking accuracy.</li>
+                <li>Turned website and campaign data into insights and optimisation recommendations.</li>
+                <li>Used generative AI to speed up analysis, draft reports, and produce ad copy variations and keyword ideas.</li>
+                <li>Aligned sales, marketing, product and BI teams on campaign plans and priorities.</li>
+              </ul>
+            </div>
+            <div class="role">
+              <h3>Sales Operations</h3>
+              <p class="dates">Jan 2022 – Dec 2023</p>
+              <ul>
+                <li>Reviewed sales orders and workflows for accuracy and compliance before execution.</li>
+                <li>Produced regular revenue reports for management.</li>
+                <li>Prepared client proposals and designed advertising packages for the sales team.</li>
+                <li>Organised client-facing roadshows.</li>
               </ul>
             </div>
             <div class="role">
@@ -414,8 +424,8 @@
           <div class="role">
             <h3>Senior Executive, Marcom Digital Marketing</h3>
             <ul>
-              <li>Ran Google Ads, Facebook Ads and social media campaigns.</li>
-              <li>Built targeting, keyword and optimisation strategies, and managed budgets and reporting.</li>
+              <li>Ran Google Ads, Meta Ads and social media campaigns, including targeting, keyword and optimisation strategy.</li>
+              <li>Managed campaign budgets, performance monitoring and reporting.</li>
               <li>Supported partnerships, sponsorships and integrated marketing initiatives.</li>
             </ul>
           </div>
@@ -431,6 +441,7 @@
             <ul>
               <li>Acquired and managed client accounts across multiple industries.</li>
               <li>Advised clients on SEM, SEO, social advertising and web solutions.</li>
+              <li>Prepared digital marketing proposals to win new customers.</li>
             </ul>
           </div>
         </article>
